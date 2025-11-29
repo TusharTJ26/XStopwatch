@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
@@ -6,6 +6,7 @@ function App() {
   const [sec, setSec] = useState("00");
   const [num, setNum] = useState(0);
   const [start, setStart] = useState(false);
+  useEffect(() => {}, [start]);
   const stopWatch = () => {
     return;
     // if (sec >= 59) {
@@ -20,9 +21,6 @@ function App() {
     setSec("00");
     setNum(0);
   };
-  while (start) {
-    stopWatch();
-  }
 
   return (
     <div>
@@ -35,7 +33,7 @@ function App() {
       ) : (
         <button onClick={() => setStart(true)}>Start</button>
       )}
-      <button>Reset</button>
+      <button onClick={() => reset()}>Reset</button>
     </div>
   );
 }
