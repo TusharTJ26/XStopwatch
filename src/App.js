@@ -2,32 +2,30 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
-  const [minutes, setMinutes] = useState(0);
-  const [sec, setSec] = useState("00");
-  const [num, setNum] = useState(0);
+  const [seconds, setSeconds] = useState(0);
   const [start, setStart] = useState(false);
-  useEffect(() => {}, [start]);
-  const stopWatch = () => {
-    return;
-    // if (sec >= 59) {
-    //   setMinutes++;
-    // } else {
-    //   setNum(num++);
-    //   setSec(`${num}`);
-    // }
-  };
+  useEffect(() => {
+    let intervalID;
+    if (start) {
+      intervalID = setInterval(() => {
+        setSeconds((seconds) => seconds + 1);
+      }, 1000);
+    }
+    return () => clearInterval(intervalID); // clearInterval (null)
+  }, [start]);
   const reset = () => {
-    setMinutes(0);
-    setSec("00");
-    setNum(0);
+    setStart(false);
+    setSeconds(0);
   };
-
+  const stopWatchFormat = (s) => {
+    const minutes = Math.floor(s / 60);
+    const remainingSeconds = s % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
   return (
     <div>
       <h1>Stopwatch</h1>
-      <p>
-        Time: {minutes}:{sec}
-      </p>
+      <p>Time: {stopWatchFormat(seconds)}</p>
       {start ? (
         <button onClick={() => setStart(false)}>Stop</button>
       ) : (
